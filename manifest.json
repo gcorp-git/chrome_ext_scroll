@@ -1,0 +1,34 @@
+{
+  "name": "Hand Scroll",
+  "version": "0.9",
+  "permissions": [
+    "contextMenus",
+    "tabs",
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "assets/img/icon_16x16.png",
+    "48": "assets/img/icon_64x64.png",
+    "128": "assets/img/icon_128x128.png"
+  },
+  "background": {
+    "scripts": [
+      "assets/js/context-menu-builder.js",
+      "assets/js/context-menu.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "assets/js/hand-scroll.js",
+        "assets/js/script.js"
+      ],
+      "run_at" : "document_start"
+    }
+  ],
+  "minimum_chrome_version" : "60",
+  "manifest_version" : 2
+}
