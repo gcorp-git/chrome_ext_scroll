@@ -27,17 +27,17 @@
 
 				this._set_cursor( 'grab' );
 
-				this._attach_event_listener( 'keydown', (e) => {
+				this._attach( document, 'keydown', (e) => {
 					this.is_ctrl_down = e.ctrlKey || e.shiftKey;
 					this._set_cursor( ( this.is_ctrl_down ) ? 'default' : 'grab' );
 				});
 
-				this._attach_event_listener( 'keyup', (e) => {
+				this._attach( document, 'keyup', (e) => {
 					this.is_ctrl_down = e.ctrlKey || e.shiftKey;
 					this._set_cursor( ( this.is_ctrl_down ) ? 'default' : 'grab' );
 				});
 
-				this._attach_event_listener( 'mousedown', (e) => {
+				this._attach( document, 'mousedown', (e) => {
 					if ( ~this.exclude_tags.indexOf( e.target.tagName ) ) return;
 
 					this.is_mouse_down = true;
@@ -45,7 +45,7 @@
 					this.sy = e.screenY;
 				});
 
-				this._attach_event_listener( 'mousemove', (e) => {
+				this._attach( document, 'mousemove', (e) => {
 					if ( this.is_mouse_down ) {
 						this.dx = e.screenX - this.sx;
 						this.dy = e.screenY - this.sy;
@@ -60,7 +60,7 @@
 					}
 				});
 
-				this._attach_event_listener( 'mouseup', (e) => {
+				this._attach( document, 'mouseup', (e) => {
 					this.is_mouse_down = false;
 
 					if ( this.is_select_blocked ) {
@@ -79,7 +79,7 @@
 			if ( !this.is_enabled ) return;
 
 			for ( let attached of this.attached ) {
-				document.removeEventListener( ...attached );
+				attached[0].removeEventListener( attached[1], attached[2], attached[3] );
 			}
 
 			this._set_cursor( 'default' );
@@ -127,9 +127,9 @@
 			this.cursor = value;
 			this.$html.style.cursor = value;
 		}
-		_attach_event_listener( event, listener ) {
-			document.addEventListener( event, listener );
-			this.attached.push([ event, listener ]);
+		_attach( $tag, event, listener, options ) {
+			$tag.addEventListener( event, listener, options );
+			this.attached.push([ $tag, event, listener, options ]);
 		}
 		_frame() {
 			if ( !this.is_enabled ) return;
