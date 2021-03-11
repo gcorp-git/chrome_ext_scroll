@@ -38,6 +38,7 @@
 				});
 
 				this._attach( document, 'mousedown', (e) => {
+					if ( e.button ) return;
 					if ( ~this.exclude_tags.indexOf( e.target.tagName ) ) return;
 
 					this.is_mouse_down = true;
